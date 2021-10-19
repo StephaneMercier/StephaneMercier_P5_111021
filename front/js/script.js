@@ -1,35 +1,20 @@
 // connexion à l'API et récupération des infos produits
-
-// fetch("http://localhost:3000/api/products").then(function (data) {
-//   console.log(data);
-// });
-
-// fetch("http://localhost:3000/api/products")
-//   .then((res) => res.json())
-//   .then((data) => console.log(data));
 let products = [];
+async function fetchAllProducts() {
+  const res = await fetch("http://localhost:3000/api/products/");
+  let products = await res.json();
+  console.log(products);
+}
 
-const fetchAllProducts = async () => {
-  await fetch("http://localhost:3000/api/products")
-    .then((res) => res.json())
-    .then((promise) => {
-      products = promise;
-      console.log(products);
-    });
-};
+fetchAllProducts();
 
-const productsDisplay = async () => {
-  await fetchAllProducts();
+// async function getProductById(productId) {
+//   const response = await fetch(
+//     "http://localhost:3000/api/products/${productId}/"
+//   );
+//   let product = await response.json();
+//   console.log(product);
+//   console.log("titre : ", product.name);
+// }
 
-  console.log(products[0]);
-  console.log(products[1]);
-  console.log(products[2]);
-  console.log(products[3]);
-  console.log(products[4]);
-  console.log(products[5]);
-  console.log(products[6]);
-  console.log(products[7]);
-  console.log(products[8]);
-};
-
-productsDisplay();
+// Intégration des Produits sur la page d'accueil

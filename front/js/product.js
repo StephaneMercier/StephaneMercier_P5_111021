@@ -1,15 +1,10 @@
-// Récupération du produit par son ID
+const productUrl = window.location.search;
+const urlParams = new URLSearchParams(productUrl);
 
-async function fetchProductById(id) {
-  let result = await fetch("http://http://localhost:3000/api/products/${id}");
-  return result.json();
+const productId = urlParams.get("id");
+console.log(productId);
+
+async function fetchProductById(_id) {
+  let response = await fetch(`http://localhost:3000/api/products/${_id}`);
+  return response.json();
 }
-
-// Fonction template pour infos Produit
-
-function populateProductDetails(product) {
-  let product = (document.getElementsByClassName("item_img").innerHTML =
-    '<img src="${product.imageUrl}" alt="${product.altTxt}" />');
-}
-
-(async () => {})();

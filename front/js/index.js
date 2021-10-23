@@ -5,13 +5,6 @@ async function fetchAllProducts() {
   return res.json();
 }
 
-// Fonction de récupération d'un seul produit par son ID
-
-async function fetchProductById(id) {
-  const res = await fetch("http://localhost:3000/api/products/id=${id}");
-  return res.json();
-}
-
 // Création d'un template HTML pour intégration des produits
 
 function createHtmlTemplateForProducts(product) {

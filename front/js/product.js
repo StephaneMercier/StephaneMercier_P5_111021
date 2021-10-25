@@ -8,13 +8,13 @@
 
 let productUrl = window.location.search;
 let urlParams = new URLSearchParams(productUrl);
-let productId = urlParams.getAll("id");
+let productId = urlParams.get("id");
 console.log(productId);
 
-// Appel d'un seul produit
+// Appel du produit spécifique
 
-async function fetchProductById(productID) {
-  const res = await fetch(`http://localhost:3000/api/products/${productID}`);
+async function fetchProductById(productId) {
+  const res = await fetch(`http://localhost:3000/api/products/${productId}`);
   const productRes = await res.json();
   return productRes;
 }
@@ -35,8 +35,8 @@ function createHtmlProductDetails(product) {
 
 // Affichage du produit avec ses détails
 
-async function displayProduct(id) {
-  let product = await fetchProductById(id);
+async function displayProduct() {
+  let product = await fetchProductById(productId);
   console.log(product);
   createHtmlProductDetails(product);
 }

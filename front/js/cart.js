@@ -1,22 +1,20 @@
-const cart = [
-  {
-    productId: "abc123",
-    name: "Kanap Test",
-    image: "http://....",
-    unitPrice: 1880,
-    quantity: 1,
-  },
-  {
-    productId: "abc123bleu",
-    name: "Kanap Test 2 Bleu",
-    image: "http://....",
-    unitPrice: 2900,
-    quantity: 2,
-  },
-];
+function getCart() {
+  let items = [];
+  if (localStorage.getItem(`panier`) != null) {
+    items = JSON.parse(localStorage.getItem(`panier`));
+  }
+  return items;
+}
 
-// const total = 0;
-// let myCart = [product._id, product.total, product.color];
+const cart = [
+  // {
+  //   productId: "abc123bleu",
+  //   name: "Kanap Test 2 Bleu",
+  //   image: "http://....",
+  //   unitPrice: 2900,
+  //   quantity: 2,
+  // },
+];
 
 function addItem() {}
 

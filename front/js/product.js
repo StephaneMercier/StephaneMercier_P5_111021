@@ -20,13 +20,10 @@ async function fetchProductById(productId) {
 
 // Insertion dynamique des détails du produit
 async function populateHtmlProductDetails(product) {
-  // document.querySelector(
-  //   ".item__img"
-  // ).innerHTML = `<img src="${product.imageUrl}" alt= "${product.altTxt}" />`;
-
   const img = document.createElement("img");
   img.src = product.imageUrl;
   img.alt = product.altTxt;
+  img.id = `image`;
   const itemImage = document.getElementsByClassName("item__img")[0];
   itemImage.appendChild(img);
 
@@ -72,7 +69,7 @@ async function displayProduct(productId) {
 function productToAddToCart() {
   const cart = fetchCartFromLocalStorage();
   const productAdded = {
-    image: document.getElementsByClassName("cart__item__img").innerHTML,
+    image: document.getElementById(`image`).getAttribute(`src`),
     name: document.getElementById("title").innerText,
     id: getProductIdByUrlParam(),
     price: document.getElementById("price").innerText,

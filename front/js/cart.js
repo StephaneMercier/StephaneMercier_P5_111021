@@ -14,16 +14,16 @@ function fetchCartFromLocalStorage() {
   }
   return cart;
 }
+fetchCartFromLocalStorage();
 
 function displayCart() {
   for (let items of cartContent) {
-    console.log(items);
     const populateCartPage = document.getElementById("cart__items");
     const populateArticle = document.createElement("article");
     const article = populateCartPage.appendChild(populateArticle);
     article.innerHTML = `<div class="cart__item__img">
   <img
-    src="${items.imageUrl}"
+    src="${items.image}"
   />
 </div>
 <div class="cart__item__content">
@@ -55,41 +55,42 @@ displayCart();
 
 function updateQty() {
   // Calcul du prix si plusieurs articles
-  if (productAdded.quantity > 1) {
-    productAdded.price *= productAdded.quantity;
+  if (items.quantity > 1) {
+    items.price *= items.quantity;
   }
 }
 
 // function addItem() {}
 
-function removeItem() {
-  const deleteItem = document.createElement("deleteItem");
-  const elementAppend = document.getElementsByClassName(
-    "cart__item__content__settings__delete"
-  );
-  elementAppend.appendChild(deleteItem);
-  for (product of deleteItem) {
-    var buttonDelete = deleteItem;
-    buttonDelete.addEventListener("click", function () {
-      console.log("Element Supprimé");
-    });
-  }
-}
+// function removeItem() {
+//   const deleteItem = document.createElement("deleteItem");
+//   const elementAppend = document.getElementsByClassName(
+//     "cart__item__content__settings__delete"
+//   );
+//   elementAppend.appendChild(deleteItem);
+//   for (let product in deleteItem) {
+//     var buttonDelete = product;
+//     buttonDelete.addEventListener("click", function () {
+//       console.log("Element Supprimé");
+//     });
+//   }
+// }
 
 // function clearCart() {}
 
-// function populateCartPage(productDetail) {
-//   return `<!-- <article class="cart__item" data-id="${productDetail.id}">
+// function populateCartPage() {
+//   for (let items in cartContent) {
+//     return `<!-- <article class="cart__item" data-id="${items.id}">
 //   <div class="cart__item__img">
 //     <img
-//       src="${productDetail.image}"
-//       alt="${productDetail.altTxt}"
+//       src="${items.image}"
+//       alt="${items.altTxt}"
 //     />
 //   </div>
 //   <div class="cart__item__content">
 //     <div class="cart__item__content__titlePrice">
-//       <h2>${productDetail.name}</h2>
-//       <p>${productDetail.price}</p>
+//       <h2>${items.name}</h2>
+//       <p>${items.price}</p>
 //     </div>
 //     <div class="cart__item__content__settings">
 //       <div class="cart__item__content__settings__quantity">
@@ -100,7 +101,7 @@ function removeItem() {
 //           name="itemQuantity"
 //           min="1"
 //           max="100"
-//           value="${productDetail.quantity}"
+//           value="${items.quantity}"
 //         />
 //       </div>
 //       <div class="cart__item__content__settings__delete">
@@ -109,18 +110,23 @@ function removeItem() {
 //     </div>
 //   </div>
 // </article>`;
+//   }
 // }
 
 // async function displayCartProducts() {
 //   let productsInCart = await fetchCartFromLocalStorage();
 //   let templateHtmlForCart = [];
+//   console.log(templateHtmlForCart);
 
 //   // Loop sur le tableau des produits
-//   productsInCart.forEach((productDetail) => {
-//     var productInCartHtml = populateCartPage(productDetail);
+//   productsInCart.forEach((items) => {
+//     var productInCartHtml = populateCartPage(items);
 //     templateHtmlForCart.push(productInCartHtml);
 //   });
+//   console.log(templateHtmlForCart);
 
 //   let itemsInCartHtml = document.getElementById("cart__items");
 //   itemsInCartHtml.innerHTML = templateHtmlForCart.join(" ");
+//   console.log(itemsInCartHtml);
 // }
+// displayCartProducts();

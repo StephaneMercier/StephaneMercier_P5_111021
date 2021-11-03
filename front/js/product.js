@@ -20,9 +20,16 @@ async function fetchProductById(productId) {
 
 // Insertion dynamique des détails du produit
 async function populateHtmlProductDetails(product) {
-  document.querySelector(
-    ".item__img"
-  ).innerHTML = `<img src="${product.imageUrl}" alt= "${product.altTxt}" />`;
+  // document.querySelector(
+  //   ".item__img"
+  // ).innerHTML = `<img src="${product.imageUrl}" alt= "${product.altTxt}" />`;
+
+  const img = document.createElement("img");
+  img.src = product.imageUrl;
+  img.alt = product.altTxt;
+  const itemImage = document.getElementsByClassName("item__img")[0];
+  itemImage.appendChild(img);
+
   document.getElementById("title").innerText = product.name;
   document.getElementById("description").innerText = product.description;
   document.getElementById("price").innerText = product.price + " ";
@@ -65,7 +72,7 @@ async function displayProduct(productId) {
 function productToAddToCart() {
   const cart = fetchCartFromLocalStorage();
   const productAdded = {
-    // image: document.querySelector(".item__img").innerHTML,
+    image: document.getElementsByClassName("cart__item__img").innerHTML,
     name: document.getElementById("title").innerText,
     id: getProductIdByUrlParam(),
     price: document.getElementById("price").innerText,

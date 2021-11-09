@@ -60,73 +60,9 @@ function updateQty() {
   }
 }
 
-// function addItem() {}
+// function addSubstractItemQuantity() {}
 
-// function removeItem() {
-//   const deleteItem = document.createElement("deleteItem");
-//   const elementAppend = document.getElementsByClassName(
-//     "cart__item__content__settings__delete"
-//   );
-//   elementAppend.appendChild(deleteItem);
-//   for (let product in deleteItem) {
-//     var buttonDelete = product;
-//     buttonDelete.addEventListener("click", function () {
-//       console.log("Element Supprimé");
-//     });
-//   }
-// }
+// function removeItem()
 
 // function clearCart() {}
-
-// function populateCartPage() {
-//   for (let items in cartContent) {
-//     return `<!-- <article class="cart__item" data-id="${items.id}">
-//   <div class="cart__item__img">
-//     <img
-//       src="${items.image}"
-//       alt="${items.altTxt}"
-//     />
-//   </div>
-//   <div class="cart__item__content">
-//     <div class="cart__item__content__titlePrice">
-//       <h2>${items.name}</h2>
-//       <p>${items.price}</p>
-//     </div>
-//     <div class="cart__item__content__settings">
-//       <div class="cart__item__content__settings__quantity">
-//         <p>Qté :</p>
-//         <input
-//           type="number"
-//           class="itemQuantity"
-//           name="itemQuantity"
-//           min="1"
-//           max="100"
-//           value="${items.quantity}"
-//         />
-//       </div>
-//       <div class="cart__item__content__settings__delete">
-//         <p class="deleteItem">Supprimer</p>
-//       </div>
-//     </div>
-//   </div>
-// </article>`;
-//   }
-// }
-
-// async function displayCartProducts() {
-//   let productsInCart = await fetchCartFromLocalStorage();
-//   let templateHtmlForCart = [];
-//   console.log(templateHtmlForCart);
-
-//   // Loop sur le tableau des produits
-//   productsInCart.forEach((items) => {
-//     var productInCartHtml = populateCartPage(items);
-//     templateHtmlForCart.push(productInCartHtml);
-//   });
-//   console.log(templateHtmlForCart);
-
-//   let itemsInCartHtml = document.getElementById("cart__items");
-//   itemsInCartHtml.innerHTML = templateHtmlForCart.join(" ");
-//   console.log(itemsInCartHtml);
-// }
-// displayCartProducts();
+// Pour clear le panier (reset le localStorage) initialise un tableau vide

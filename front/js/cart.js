@@ -17,9 +17,10 @@ function fetchCartFromLocalStorage() {
 
 function displayCart() {
   for (let items of cartContent) {
-    document.querySelector(
-      "#cart__items"
-    ).innerHTML = `<article class="cart__item" data-id="${items.id}">
+    const setElement = document.querySelector("#cart__items");
+    const createElement = document.createElement("div");
+    setElement.appendChild(createElement);
+    createElement.innerHTML = `<article class="cart__item" data-id="${items.id}">
     <div class="cart__item__img">
       <img
         src="${items.image}"
@@ -29,8 +30,9 @@ function displayCart() {
     <div class="cart__item__content">
       <div class="cart__item__content__titlePrice">
         <h2>${items.name}</h2>
+        <p>${items.color}</p></br>
         <p>${items.price} €</p>
-        <p>${items.color}</p>
+        
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">

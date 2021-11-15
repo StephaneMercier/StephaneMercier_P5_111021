@@ -60,16 +60,11 @@ async function displayProduct(productId) {
   populateHtmlProductDetails(product);
 }
 
-// Fonction Globale
-(async () => {
-  let productId = getProductIdByUrlParam();
-  await displayProduct(productId);
-})();
-
 function productToAddToCart() {
   const cart = fetchCartFromLocalStorage();
   const productAdded = {
     image: document.getElementById(`image`).getAttribute(`src`),
+    altTxt: document.getElementById(`image`).getAttribute(`alt`),
     name: document.getElementById("title").innerText,
     id: getProductIdByUrlParam(),
     price: document.getElementById("price").innerText,
@@ -106,10 +101,20 @@ function productToAddToCart() {
     cart.push(productAdded);
   }
   cartToLocalStorage(cart);
+
+  if (productAdded.quantity > 1) {
+    return (productAdded.price *= productAdded.quantity);
+  }
 }
 
-function clickAndAddToCart() {
+function onClickAndAddToCart() {
   const addToCart = document.getElementById(`addToCart`);
   addToCart.addEventListener(`click`, productToAddToCart);
 }
-clickAndAddToCart();
+
+// Fonction Globale
+(async () => {
+  let productId = getProductIdByUrlParam();
+  await displayProduct(productId);
+  onClickAndAddToCart();
+})();

@@ -15,43 +15,90 @@ function fetchCartFromLocalStorage() {
   return cart;
 }
 
+// function displayCart() {
+//   for (let items of cartContent) {
+//     const setElement = document.querySelector("#cart__items");
+//     const createElement = document.createElement("div");
+//     setElement.appendChild(createElement);
+//     createElement.innerHTML = `<article class="cart__item" data-id="${items.id}">
+//     <div class="cart__item__img">
+//       <img
+//         src="${items.image}"
+//         alt="${items.altTxt}"
+//       />
+//     </div>
+//     <div class="cart__item__content">
+//       <div class="cart__item__content__titlePrice">
+//         <h2>${items.name}</h2>
+//         <p>${items.color}</p></br>
+//         <p>${items.price} €</p>
+
+//       </div>
+//       <div class="cart__item__content__settings">
+//         <div class="cart__item__content__settings__quantity">
+//           <p>Qté :</p>
+//           <input
+//             type="number"
+//             class="itemQuantity"
+//             name="itemQuantity"
+//             min="1"
+//             max="100"
+//             value="${items.quantity}"
+//           />
+//         </div>
+//         <div class="cart__item__content__settings__delete">
+//           <button type="button" class="deleteItem">Supprimer</button>
+//         </div>
+//       </div>
+//     </div>
+//   </article>`;
+//   }
+// }
+
 function displayCart() {
   for (let items of cartContent) {
-    const setElement = document.querySelector("#cart__items");
-    const createElement = document.createElement("div");
-    setElement.appendChild(createElement);
-    createElement.innerHTML = `<article class="cart__item" data-id="${items.id}">
-    <div class="cart__item__img">
-      <img
-        src="${items.image}"
-        alt="${items.altTxt}"
-      />
-    </div>
-    <div class="cart__item__content">
-      <div class="cart__item__content__titlePrice">
-        <h2>${items.name}</h2>
-        <p>${items.color}</p></br>
-        <p>${items.price} €</p>
-        
-      </div>
-      <div class="cart__item__content__settings">
-        <div class="cart__item__content__settings__quantity">
-          <p>Qté :</p>
-          <input
-            type="number"
-            class="itemQuantity"
-            name="itemQuantity"
-            min="1"
-            max="100"
-            value="${items.quantity}"
-          />
-        </div>
-        <div class="cart__item__content__settings__delete">
-          <p class="deleteItem">Supprimer</p>
-        </div>
-      </div>
-    </div>
-  </article>`;
+    // Création de l'article
+    const itemsSection = document.getElementById("cart__items");
+    const createArticle = document.createElement("article");
+    createArticle.classList.add("cart__item");
+    createArticle.setAttribute("data-id", items.id);
+    createArticle.setAttribute("data-color", items.color);
+    createArticle.setAttribute("data-price", items.price);
+    itemsSection.appendChild(createArticle);
+
+    // Ajout de l'image
+    const divImage = document.createElement("div");
+    divImage.classList.add("cart__item__img");
+    const image = document.createElement("img");
+    image.src = items.image;
+    image.alt = items.altTxt;
+    divImage.appendChild(image);
+    createArticle.appendChild(divImage);
+
+    // Ajout du nom et prix de l'article
+    const addCartItemContent = document.createElement("div");
+    addCartItemContent.classList.add("cart__item__content");
+    createArticle.appendChild(addCartItemContent);
+    const addTitlePriceDiv = document.createElement("div");
+    addTitlePriceDiv.classList.add("cart__item__content__titlePrice");
+    createArticle.appendChild(addTitlePriceDiv);
+    const createTitle = document.createElement("h2");
+    createTitle.innerHTML = `${items.name} </br> ${items.color}`;
+    addTitlePriceDiv.appendChild(createTitle);
+    const priceP = document.createElement("p");
+    priceP.innerText = `${items.price} €`;
+    addTitlePriceDiv.appendChild(priceP);
+
+    // Ajout de la quantité
+    const qtyDiv = document.createElement("div");
+    qtyDiv.classList.add("cart__item__content__settings");
+    createArticle.appendChild(qtyDiv);
+    const settingsQty = document.createElement("div");
+    settingsQty.classList.add("cart__item__content__settings__quantity");
+    qtyDiv.appendChild(settingsQty);
+    const qtyP = document.createElement("p");
+    qtyP.innerText = `Qté : ${items.quantity}`;
+    settingsQty.appendChild(qtyP);
   }
 }
 
@@ -107,9 +154,9 @@ console.log(deleteButton);
 for (i = 0; i < deleteButton.length; i++) {
   deleteButton[i].addEventListener("click", (event) => {
     event.preventDefault();
-    let itemToDelete = cartContent[i].items.id;
+    let itemToDelete = cartContent[i].id;
+    console.log(itemToDelete);
     cartContent = cartContent.filter((el) => el.id !== itemToDelete);
-    console.log(cartContent);
   });
 }
 // }
@@ -121,39 +168,3 @@ fetchCartFromLocalStorage();
 displayCart();
 calculateItemsTotal();
 calculateAndDisplayTotalPrice();
-
-// const populateArticle = document.createElement("article");
-//     const article = populateCartPage.appendChild(populateArticle);
-//     article.innerHTML = `<article class="cart__item" data-id="${items.id}">
-//     <div class="cart__item__img">
-//   <img
-//     src="${items.image}"
-//   />
-// </div>
-// <div class="cart__item__content">
-//   <div class="cart__item__content__titlePrice">
-//     <h2>${items.name}</h2>
-//     <p>Couleur: ${items.color}</p>
-//     <p>${items.price} €</p>
-
-//   </div>
-//   <div class="cart__item__content__settings">
-//     <div class="cart__item__content__settings__quantity">
-//       <p>Qté :</p>
-//       <input
-//         type="number"
-//         class="itemQuantity"
-//         name="itemQuantity"
-//         min="1"
-//         max="100"
-//         value="${items.quantity}"
-//       />
-//     </div>
-//   </div>
-// </div></article>`;
-//     const getElement = document.getElementById("cart__items");
-//     const createTag = document.createElement("div");
-//     const appendChild = getElement.appendChild(createTag);
-//     appendChild.innerHTML = `<div class="cart__item__content__settings__delete">
-//     <p class="deleteItem">Supprimer</p>
-//     </div> `;

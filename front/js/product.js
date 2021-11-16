@@ -107,9 +107,14 @@ function productToAddToCart() {
   }
 }
 
+function message() {
+  alert("produit ajouté");
+}
+
 function onClickAndAddToCart() {
   const addToCart = document.getElementById(`addToCart`);
   addToCart.addEventListener(`click`, productToAddToCart);
+  addToCart.addEventListener("click", message);
 }
 
 // Fonction Globale
@@ -118,3 +123,5 @@ function onClickAndAddToCart() {
   await displayProduct(productId);
   onClickAndAddToCart();
 })();
+
+// Ajouter Message de confirmation lors de l'ajout au panier

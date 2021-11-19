@@ -108,7 +108,7 @@ function productToAddToCart() {
 }
 
 function message() {
-  alert("produit ajouté");
+  alert("produit ajouté dans le panier");
 }
 
 function onClickAndAddToCart() {

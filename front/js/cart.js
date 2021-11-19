@@ -85,20 +85,20 @@ function displayCart() {
     const createTitle = document.createElement("h2");
     createTitle.innerHTML = `${items.name} </br> ${items.color}`;
     addTitlePriceDiv.appendChild(createTitle);
-    const priceP = document.createElement("p");
-    priceP.innerText = `${items.price} €`;
-    addTitlePriceDiv.appendChild(priceP);
+    const priceParagraph = document.createElement("p");
+    priceParagraph.innerText = `${items.price} €`;
+    addTitlePriceDiv.appendChild(priceParagraph);
 
     // Ajout de la quantité et de l'input element
     const qtyDiv = document.createElement("div");
     qtyDiv.classList.add("cart__item__content__settings");
     createArticle.appendChild(qtyDiv);
-    const settingsQty = document.createElement("div");
-    settingsQty.classList.add("cart__item__content__settings__quantity");
-    qtyDiv.appendChild(settingsQty);
+    const settingsQtyDiv = document.createElement("div");
+    settingsQtyDiv.classList.add("cart__item__content__settings__quantity");
+    qtyDiv.appendChild(settingsQtyDiv);
     const qtyParagraph = document.createElement("p");
     qtyParagraph.innerText = `Qté : `;
-    settingsQty.appendChild(qtyParagraph);
+    settingsQtyDiv.appendChild(qtyParagraph);
     const inputDiv = document.createElement("input");
     inputDiv.setAttribute("type", "number");
     inputDiv.setAttribute("value", items.quantity);
@@ -109,7 +109,7 @@ function displayCart() {
     qtyParagraph.appendChild(inputDiv);
     addTitlePriceDiv.appendChild(qtyParagraph);
 
-    // Ajout bouton Supprimer et eventListener onclick
+    // Ajout bouton Supprimer et eventListener onClickDeleteItem
     const deleteDiv = document.createElement("div");
     deleteDiv.classList.add("cart__item__content__settings__delete");
     createArticle.appendChild(deleteDiv);
@@ -122,11 +122,25 @@ function displayCart() {
   }
 }
 
-function onClickDeleteItem() {
-  const itemToDelete = this.closest(".cart__item");
-  console.log(itemToDelete);
-  itemToDelete.remove();
-  localStorage.setItem(".cart__item", JSON.stringify(itemToDelete));
+function onClickDeleteItem(event) {
+  const article = event.target.closest("article");
+  const getItemId = article.getAttribute("data-id");
+  const getItemColor = article.getAttribute("data-color");
+  let cart = fetchCartFromLocalStorage();
+
+  cart = cart.filter(
+    (itemToRemoveFromLocalStorage) =>
+      !(
+        itemToRemoveFromLocalStorage.id === getItemId &&
+        itemToRemoveFromLocalStorage.color === getItemColor
+      )
+  );
+  const itemToDelete = document.getElementById("cart__items");
+  itemToDelete.removeChild(article);
+
+  cartToLocalStorage(cart);
+  // calculateAndDisplayTotalPrice();
+  // calculateItemsTotal();
 }
 
 function updateItemQuantity(event) {
@@ -135,10 +149,11 @@ function updateItemQuantity(event) {
   const cart = fetchCartFromLocalStorage();
   for (const item of cart) {
     if (item.id === itemId && item.color === itemColor) {
-      item.color = event.target.value;
+      item.quantity = event.target.value;
     }
   }
-  calculateItemsTotal();
+  cartToLocalStorage(cart);
+  // calculateItemsTotal();
 }
 
 // Fonction de calcul et display du total des articles
@@ -154,8 +169,10 @@ function calculateItemsTotal() {
   }
 
   // Utilisation de reduce() pour calculer le total des articles et l'afficher
-  document.getElementById("totalQuantity").innerText =
-    addItemsQuantity.reduce(totalQuantity);
+  document.getElementById("totalQuantity").innerText = addItemsQuantity.reduce(
+    totalQuantity,
+    0
+  );
   function totalQuantity(total, items) {
     return total + items;
   }
@@ -178,21 +195,7 @@ function calculateAndDisplayTotalPrice() {
   document.getElementById("totalPrice").innerText = sumOfPrices;
 }
 
-// function selectItemToDelete() {
-//   let itemToDelete = [];
-//   for (i = 0; i < cartContent.length; i++) {
-//     let whichItem = cartContent[i].id;
-//     itemToDelete.splice(whichItem);
-//     console.log(itemToDelete);
-//   }
-// }
-
-// function onClickDeleteItem() {
-// Utiliser deleteItem.closest("cart__items") !!!
-// }
-
-// function clearCart() {}
-// Pour clear le panier (reset le localStorage) initialise un tableau vide
+// Gestion du formulaire pour la commande de
 
 fetchCartFromLocalStorage();
 displayCart();

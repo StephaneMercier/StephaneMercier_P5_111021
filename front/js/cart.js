@@ -15,46 +15,6 @@ function fetchCartFromLocalStorage() {
   return cart;
 }
 
-// function displayCart() {
-//   for (let items of cartContent) {
-//     const setElement = document.querySelector("#cart__items");
-//     const createElement = document.createElement("div");
-//     setElement.appendChild(createElement);
-//     createElement.innerHTML = `<article class="cart__item" data-id="${items.id}">
-//     <div class="cart__item__img">
-//       <img
-//         src="${items.image}"
-//         alt="${items.altTxt}"
-//       />
-//     </div>
-//     <div class="cart__item__content">
-//       <div class="cart__item__content__titlePrice">
-//         <h2>${items.name}</h2>
-//         <p>${items.color}</p></br>
-//         <p>${items.price} €</p>
-
-//       </div>
-//       <div class="cart__item__content__settings">
-//         <div class="cart__item__content__settings__quantity">
-//           <p>Qté :</p>
-//           <input
-//             type="number"
-//             class="itemQuantity"
-//             name="itemQuantity"
-//             min="1"
-//             max="100"
-//             value="${items.quantity}"
-//           />
-//         </div>
-//         <div class="cart__item__content__settings__delete">
-//           <button type="button" class="deleteItem">Supprimer</button>
-//         </div>
-//       </div>
-//     </div>
-//   </article>`;
-//   }
-// }
-
 function displayCart() {
   for (let items of cartContent) {
     // Création de l'article
@@ -139,8 +99,6 @@ function onClickDeleteItem(event) {
   itemToDelete.removeChild(article);
 
   cartToLocalStorage(cart);
-  // calculateAndDisplayTotalPrice();
-  // calculateItemsTotal();
 }
 
 function updateItemQuantity(event) {
@@ -153,29 +111,21 @@ function updateItemQuantity(event) {
     }
   }
   cartToLocalStorage(cart);
-  // calculateItemsTotal();
+  calculateAndDisplayTotalPrice();
+  calculateItemsQuantity();
 }
 
-// Fonction de calcul et display du total des articles
-function calculateItemsTotal() {
-  // initialisation de la variable
-  let addItemsQuantity = [];
+function calculateItemsQuantity() {
+  let totalQuantity = 0;
 
-  // Boucle sur le contenu du panier pour extraire les quantités sous forme d'array
-  for (let i = 0; i < cartContent.length; i++) {
-    let quantityInCart = cartContent[i].quantity;
-    addItemsQuantity.push(quantityInCart);
-    console.log(addItemsQuantity);
+  const items = document.querySelectorAll("cart__items");
+  for (article of items) {
+    const itemQty = Number(
+      article.getElementsByClassName("itemQuantity")[0].value
+    );
+    totalQuantity = totalQuantity + itemQty;
   }
-
-  // Utilisation de reduce() pour calculer le total des articles et l'afficher
-  document.getElementById("totalQuantity").innerText = addItemsQuantity.reduce(
-    totalQuantity,
-    0
-  );
-  function totalQuantity(total, items) {
-    return total + items;
-  }
+  document.getElementById("totalQuantity").innerText = totalQuantity;
 }
 
 // Fonction de calcul et de display du total du prix du panier
@@ -195,9 +145,100 @@ function calculateAndDisplayTotalPrice() {
   document.getElementById("totalPrice").innerText = sumOfPrices;
 }
 
-// Gestion du formulaire pour la commande de
+// Gestion du formulaire pour la commande
 
-fetchCartFromLocalStorage();
+function fillOutForm() {
+  const firstNameField = document.getElementById("firstName");
+
+  function validateFirstName() {
+    const firstNameEntry = firstNameField.value.trim();
+    const setFirstNameRegEx =
+      /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
+    const firstNameErrMsg = document.getElementById("firstNameErrorMsg");
+    if (firstNameEntry == " ") {
+      firstNameErrMsg.innerText = "Merci d'entrer votre prénom";
+    } else if (!setFirstNameRegEx.test(firstNameEntry)) {
+      firstNameErrMsg.textContent =
+        "Le champ du prénom ne doit pas contenir de caractères spéciaux ni d'espaces";
+    } else {
+      firstNameErrMsg.innerText = " ";
+      return firstNameEntry;
+    }
+  }
+  firstNameField.addEventListener("input", validateFirstName);
+
+  const lastNameField = document.getElementById("lastName");
+  function validateLastName() {
+    const lastNameEntry = lastNameField.value.trim();
+    const setLastNameRegEx =
+      /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
+    const lastNameErrMsg = document.getElementById("lastNameErrorMsg");
+    if (lastNameEntry == " ") {
+      lastNameErrMsg.innerText = "Merci d'entrer votre nom de famille";
+    } else if (!setLastNameRegEx.test(lastNameEntry)) {
+      lastNameErrMsg.innerText =
+        "Le nom de famille ne doit comporter aucun caractère spécial ni d'espace";
+    } else {
+      lastNameErrMsg.textContent = " ";
+      return lastNameEntry;
+    }
+  }
+  lastNameField.addEventListener("input", validateLastName);
+
+  const addressField = document.getElementById("address");
+  function validateAddress() {
+    const addressEntry = addressField.value.trim();
+    const setAddressRegEx = /([A-Z][a-z]+\s?)+,\s[A-Z]{2}\s\d{5}-?\d{4}?/;
+    const addressErrMsg = document.getElementById("addressErrorMsg");
+    if (addressEntry == " ") {
+      addressErrMsg = "Veuillez renseigner votre addresse de résidence";
+    } else if (!setAddressRegEx.test(addressEntry)) {
+      addressErrMsg.textContent = "Le format de l'adresse n'est pas valide";
+    } else {
+      addressErrMsg = " ";
+      return addressEntry;
+    }
+  }
+  addressField.addEventListener("input", validateAddress);
+
+  const cityField = document.getElementById("city");
+  function validateCity() {
+    const cityEntry = cityField.value.trim();
+    const setCityRegEx =
+      /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+    const cityErrMsg = document.getElementById("cityErrorMsg");
+    if (cityEntry == " ") {
+      cityErrMsg = "Veuillez renseigner votre Ville de résidence";
+    } else if (!setCityRegEx.test(cityEntry)) {
+      cityErrMsg.textContent = "Le nom de la Ville est incorrect";
+    } else {
+      cityErrMsg == " ";
+      console.log(cityErrMsg);
+      return cityEntry;
+    }
+  }
+  cityField.addEventListener("input", validateCity);
+
+  const emailField = document.getElementById("email");
+  function validateEmail() {
+    const emailEntry = emailField.value.trim();
+    const setEmailRegEx =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const emailErrMsg = document.getElementById("emailErrorMsg");
+    if (emailEntry == " ") {
+      emailErrMsg = "Veuillez renseigner votre addresse e-mail";
+    } else if (!setEmailRegEx.test(emailEntry)) {
+      emailErrMsg.textContent =
+        "le format de l'adresse e-mail n'est pas valide";
+    } else {
+      emailErrMsg == " ";
+      return emailEntry;
+    }
+  }
+  emailField.addEventListener("input", validateEmail);
+}
+
 displayCart();
-calculateItemsTotal();
+calculateItemsQuantity();
 calculateAndDisplayTotalPrice();
+fillOutForm();

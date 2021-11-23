@@ -35,7 +35,7 @@ function displayCart() {
     divImage.appendChild(image);
     createArticle.appendChild(divImage);
 
-    // Ajout du nom et prix de l'article
+    // Ajout du nom, de la couleur et du prix de l'article
     const addCartItemContent = document.createElement("div");
     addCartItemContent.classList.add("cart__item__content");
     createArticle.appendChild(addCartItemContent);
@@ -47,7 +47,8 @@ function displayCart() {
     addTitlePriceDiv.appendChild(createTitle);
     const priceParagraph = document.createElement("p");
     priceParagraph.innerText = `${items.price} €`;
-    addTitlePriceDiv.appendChild(priceParagraph);
+    addCartItemContent.appendChild(addTitlePriceDiv);
+    createTitle.appendChild(priceParagraph);
 
     // Ajout de la quantité et de l'input element
     const qtyDiv = document.createElement("div");
@@ -66,19 +67,20 @@ function displayCart() {
     inputDiv.min = "1";
     inputDiv.max = "100";
     inputDiv.addEventListener("change", updateItemQuantity);
-    qtyParagraph.appendChild(inputDiv);
-    addTitlePriceDiv.appendChild(qtyParagraph);
+    settingsQtyDiv.appendChild(inputDiv);
+    qtyDiv.appendChild(settingsQtyDiv);
+    addCartItemContent.appendChild(qtyDiv);
 
     // Ajout bouton Supprimer et eventListener onClickDeleteItem
     const deleteDiv = document.createElement("div");
     deleteDiv.classList.add("cart__item__content__settings__delete");
-    createArticle.appendChild(deleteDiv);
     const deleteParagraph = document.createElement("p");
     deleteParagraph.classList.add("deleteItem");
     deleteParagraph.innerText = "Supprimer";
-    deleteParagraph.addEventListener("click", onClickDeleteItem);
+
     deleteDiv.appendChild(deleteParagraph);
-    qtyParagraph.appendChild(deleteDiv);
+    qtyDiv.appendChild(deleteDiv);
+    deleteParagraph.addEventListener("click", onClickDeleteItem);
   }
 }
 
@@ -105,27 +107,36 @@ function updateItemQuantity(event) {
   const itemId = event.target.closest("article").getAttribute("data-id");
   const itemColor = event.target.closest("article").getAttribute("data-color");
   const cart = fetchCartFromLocalStorage();
-  for (const item of cart) {
+  for (const item of cartContent) {
     if (item.id === itemId && item.color === itemColor) {
       item.quantity = event.target.value;
     }
   }
   cartToLocalStorage(cart);
   calculateAndDisplayTotalPrice();
-  calculateItemsQuantity();
+  // calculateItemsQuantity();
 }
 
 function calculateItemsQuantity() {
-  let totalQuantity = 0;
-
-  const items = document.querySelectorAll("cart__items");
-  for (article of items) {
-    const itemQty = Number(
-      article.getElementsByClassName("itemQuantity")[0].value
-    );
-    totalQuantity = totalQuantity + itemQty;
+  const addTotalItems = [];
+  for (let i = 0; i < cartContent.length; i++) {
+    let itemsInCart = cartContent[i].quantity;
+    // console.log(itemsInCart);
+    addTotalItems.push(itemsInCart);
   }
-  document.getElementById("totalQuantity").innerText = totalQuantity;
+  const reducer = (acc, currValue) => acc + currValue;
+  const sumOfItems = addTotalItems.reduce(reducer, 0);
+  document.getElementById("totalQuantity").innerText = sumOfItems;
+
+  // let totalQuantity = 0;
+
+  // const items = document.getElementById("cart__items").children;
+  // for (article of items) {
+  //   const itemQty = +article.getElementsByClassName("itemQuantity").value;
+
+  //   totalQuantity = totalQuantity + itemQty;
+  // }
+  // document.getElementById("totalQuantity").innerText = totalQuantity;
 }
 
 // Fonction de calcul et de display du total du prix du panier
@@ -153,15 +164,16 @@ function fillOutForm() {
   function validateFirstName() {
     const firstNameEntry = firstNameField.value.trim();
     const setFirstNameRegEx =
-      /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
+      /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ -]+$/;
+
     const firstNameErrMsg = document.getElementById("firstNameErrorMsg");
-    if (firstNameEntry == " ") {
-      firstNameErrMsg.innerText = "Merci d'entrer votre prénom";
+    if (firstNameEntry == "") {
+      firstNameErrMsg.textContent = "Merci d'entrer votre prénom";
     } else if (!setFirstNameRegEx.test(firstNameEntry)) {
       firstNameErrMsg.textContent =
         "Le champ du prénom ne doit pas contenir de caractères spéciaux ni d'espaces";
     } else {
-      firstNameErrMsg.innerText = " ";
+      firstNameErrMsg.innerText = "";
       return firstNameEntry;
     }
   }
@@ -171,31 +183,34 @@ function fillOutForm() {
   function validateLastName() {
     const lastNameEntry = lastNameField.value.trim();
     const setLastNameRegEx =
-      /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
+      /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ -]+$/;
     const lastNameErrMsg = document.getElementById("lastNameErrorMsg");
-    if (lastNameEntry == " ") {
-      lastNameErrMsg.innerText = "Merci d'entrer votre nom de famille";
+    if (lastNameEntry == "") {
+      lastNameErrMsg.textContent = "Merci d'entrer votre nom de famille";
     } else if (!setLastNameRegEx.test(lastNameEntry)) {
-      lastNameErrMsg.innerText =
+      lastNameErrMsg.textContent =
         "Le nom de famille ne doit comporter aucun caractère spécial ni d'espace";
     } else {
-      lastNameErrMsg.textContent = " ";
+      lastNameErrMsg.textContent = "";
       return lastNameEntry;
     }
+    return false;
   }
   lastNameField.addEventListener("input", validateLastName);
 
   const addressField = document.getElementById("address");
   function validateAddress() {
     const addressEntry = addressField.value.trim();
-    const setAddressRegEx = /([A-Z][a-z]+\s?)+,\s[A-Z]{2}\s\d{5}-?\d{4}?/;
-    const addressErrMsg = document.getElementById("addressErrorMsg");
-    if (addressEntry == " ") {
-      addressErrMsg = "Veuillez renseigner votre addresse de résidence";
+    const setAddressRegEx =
+      /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ 0-9-]+$/;
+    let addressErrMsg = document.getElementById("addressErrorMsg");
+    if (addressEntry == "") {
+      addressErrMsg.textContent =
+        "Veuillez renseigner votre addresse de résidence";
     } else if (!setAddressRegEx.test(addressEntry)) {
       addressErrMsg.textContent = "Le format de l'adresse n'est pas valide";
     } else {
-      addressErrMsg = " ";
+      addressErrMsg = "";
       return addressEntry;
     }
   }
@@ -207,13 +222,12 @@ function fillOutForm() {
     const setCityRegEx =
       /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
     const cityErrMsg = document.getElementById("cityErrorMsg");
-    if (cityEntry == " ") {
-      cityErrMsg = "Veuillez renseigner votre Ville de résidence";
+    if (cityEntry == "") {
+      cityErrMsg.textContent = "Veuillez renseigner votre Ville de résidence";
     } else if (!setCityRegEx.test(cityEntry)) {
       cityErrMsg.textContent = "Le nom de la Ville est incorrect";
     } else {
-      cityErrMsg == " ";
-      console.log(cityErrMsg);
+      cityErrMsg == "";
       return cityEntry;
     }
   }
@@ -225,18 +239,28 @@ function fillOutForm() {
     const setEmailRegEx =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const emailErrMsg = document.getElementById("emailErrorMsg");
-    if (emailEntry == " ") {
-      emailErrMsg = "Veuillez renseigner votre addresse e-mail";
+    if (emailEntry == "") {
+      emailErrMsg.textContent = "Veuillez renseigner votre addresse e-mail";
     } else if (!setEmailRegEx.test(emailEntry)) {
       emailErrMsg.textContent =
         "le format de l'adresse e-mail n'est pas valide";
     } else {
-      emailErrMsg == " ";
+      emailErrMsg == "";
       return emailEntry;
     }
   }
   emailField.addEventListener("input", validateEmail);
 }
+
+// function createOrder() {}
+
+// function submitOrder() {
+//   var order = fetch(`http://localhost:3000/api//products/order`){
+//     method: 'POST',
+//     body: JSON.stringify({
+
+//     })
+// }
 
 displayCart();
 calculateItemsQuantity();

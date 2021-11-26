@@ -6,6 +6,8 @@ function getProductIdByUrlParam() {
   if (urlParams.has("id")) {
     id = urlParams.get("id");
     return id;
+  } else {
+    console.error("L'ID du produit est introuvable");
   }
   return productId;
 }

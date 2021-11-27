@@ -243,15 +243,17 @@ function validateEmail() {
 }
 $emailField.addEventListener("change", validateEmail);
 
-function confirmOrder(contactObject) {
+function confirmOrder(contact) {
   if (cartContent === null || cartContent.length === 0) {
     window.alert("Panier vide");
     return;
   }
+
   const myBody = JSON.stringify({
-    contactObject,
-    product: cartContent.map((product) => product.id),
+    contact,
+    products: cartContent.map((product) => product.id),
   });
+  console.log(myBody);
   const myHeaders = {
     Accept: "application/json",
     "Content-type": "application/json",
@@ -261,12 +263,11 @@ function confirmOrder(contactObject) {
     headers: myHeaders,
     mode: `cors`,
     body: myBody,
-    cache: `default`,
   };
   fetch("http://localhost:3000/api/products/order", myInit)
-    .then(function (response) {
-      if (response.ok) {
-        return response.JSON();
+    .then(function (res) {
+      if (res.ok) {
+        return res.json();
       }
     })
     .then(function (order) {
@@ -286,40 +287,14 @@ function submitOrder(e) {
   const city = validateCity();
   const email = validateEmail();
   if (firstName && lastName && address && city && email) {
-    const contactObject = { firstName, lastName, address, city, email };
-    confirmOrder(contactObject);
-    console.log(contactObject);
+    const contact = { firstName, lastName, address, city, email };
+    confirmOrder(contact);
+    console.log(contact);
   } else {
     window.alert("Formulaire non complété");
   }
 }
 document.getElementById("order").onclick = submitOrder;
-
-// function validate(firstName, regex, firstNameErrMsg);
-
-// let submitOrder = $orderForm.addEventListener(`click`, function (e) {
-//   e.preventDefault();
-//   const formData = new formData(this);
-//   fetch("http://localhost:3000/api/products/order", {
-//     method: `post`,
-//     body: formData,
-//   })
-//     .then(function (response) {
-//       return response.JSON();
-//     })
-//     .then(function (JSON) {
-//       console.log(JSON);
-//     })
-//     .catch(function (err) {
-//       console.log(err);
-//     });
-// });
-
-// function submitOrder() {
-//   const orderButton = document.getElementById("orderButton");
-//   orderButton.addEventListener("click", createOrder);
-// }
-// submitOrder();
 
 displayCart();
 calculateItemsQuantity();

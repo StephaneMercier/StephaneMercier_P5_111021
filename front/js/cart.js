@@ -1,3 +1,4 @@
+// Initialisation des variables de modif du DOM
 const cartContent = fetchCartFromLocalStorage();
 const $totalQuantity = document.getElementById("totalQuantity");
 const $totalPrice = document.getElementById("totalPrice");
@@ -22,6 +23,7 @@ function fetchCartFromLocalStorage() {
   return cart;
 }
 
+// Fonction Affichage du panier
 function displayCart() {
   for (let items of cartContent) {
     // Création de l'article
@@ -91,6 +93,7 @@ function displayCart() {
   }
 }
 
+// Fonction de suppression d'un article
 function onClickDeleteItem(event) {
   const article = event.target.closest("article");
   const getItemId = article.getAttribute("data-id");
@@ -110,6 +113,7 @@ function onClickDeleteItem(event) {
   cartToLocalStorage(cart);
 }
 
+// Modifications de la quantité et du prix en fonction
 function updateItemQuantity(event) {
   const itemId = event.target.closest("article").getAttribute("data-id");
   const itemColor = event.target.closest("article").getAttribute("data-color");
@@ -118,6 +122,7 @@ function updateItemQuantity(event) {
     (cartItem) => cartItem.id === itemId && cartItem.color === itemColor
   );
 
+  // Gestion de l'erreur en cas de quantité nulle
   if (event.target.value < 0) {
     event.target.value = 1;
     alert("quantité non reconnue (min : 1)");
@@ -130,6 +135,7 @@ function updateItemQuantity(event) {
   cartToLocalStorage(cartContent);
 }
 
+// Calcul du total des articles
 function calculateItemsQuantity() {
   let countItemsQuantity = cartContent.reduce(
     (acc, curr) => acc + parseInt(curr.quantity),
@@ -243,6 +249,7 @@ function validateEmail() {
 }
 $emailField.addEventListener("change", validateEmail);
 
+// Confirmation de la commande
 function confirmOrder(contact) {
   if (cartContent === null || cartContent.length === 0) {
     window.alert("Panier vide");
@@ -279,6 +286,7 @@ function confirmOrder(contact) {
     });
 }
 
+// Envoi des données du formulaire dans le localStorage
 function submitOrder(e) {
   e.preventDefault();
   const firstName = validateFirstName();

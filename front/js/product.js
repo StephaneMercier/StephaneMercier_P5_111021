@@ -62,6 +62,7 @@ async function displayProduct(productId) {
   populateHtmlProductDetails(product);
 }
 
+// Ajout des produits dans le panier avec gestion des erreurs
 function productToAddToCart() {
   const cart = fetchCartFromLocalStorage();
   const productAdded = {
@@ -103,16 +104,14 @@ function productToAddToCart() {
     cart.push(productAdded);
   }
   cartToLocalStorage(cart);
-
-  if (productAdded.quantity > 1) {
-    return (productAdded.price *= productAdded.quantity);
-  }
 }
 
+// Message de confirmation du produit ajouté dans le panier
 function message() {
   alert("produit ajouté dans le panier");
 }
 
+// eventListener sur le bouton "ajouter au panier" + envoi du message de confirmation
 function onClickAndAddToCart() {
   const addToCart = document.getElementById(`addToCart`);
   addToCart.addEventListener(`click`, productToAddToCart);
@@ -125,5 +124,3 @@ function onClickAndAddToCart() {
   await displayProduct(productId);
   onClickAndAddToCart();
 })();
-
-// Ajouter Message de confirmation lors de l'ajout au panier

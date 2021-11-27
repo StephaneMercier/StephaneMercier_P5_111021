@@ -19,6 +19,7 @@ function cartToLocalStorage(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
+// Fonction globale pour validation du formulaire
 function validate(id, pattern, messageError) {
   const $field = document.querySelector(`#${id}`);
   const $errorMsg = document.querySelector(`#${id}ErrorMsg`);

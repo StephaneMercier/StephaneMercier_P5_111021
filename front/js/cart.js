@@ -286,7 +286,7 @@ function confirmOrder(contact) {
     });
 }
 
-// Envoi des données du formulaire dans le localStorage
+// Envoi des données du formulaire 
 function submitOrder(e) {
   e.preventDefault();
   const firstName = validateFirstName();

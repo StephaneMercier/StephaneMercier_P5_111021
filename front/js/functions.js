@@ -1,5 +1,4 @@
 // Récupération du panier depuis le localStorage
-
 function fetchCartFromLocalStorage() {
   const convertFromLocalStorage = localStorage.getItem("cart");
   let cart;
@@ -14,7 +13,6 @@ function fetchCartFromLocalStorage() {
 }
 
 // Envoi du contenu du panier vers le localStorage
-
 function cartToLocalStorage(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }

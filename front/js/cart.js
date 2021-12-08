@@ -7,7 +7,6 @@ const $lastNameField = document.getElementById("lastName");
 const $addressField = document.getElementById("address");
 const $cityField = document.getElementById("city");
 const $emailField = document.getElementById("email");
-// console.log(cartContent);
 
 // Récupération du panier dans le localStorage
 function fetchCartFromLocalStorage() {
@@ -141,29 +140,18 @@ function calculateItemsQuantity() {
     (acc, curr) => acc + parseInt(curr.quantity),
     0
   );
-  // console.log(countItemsQuantity);
+
   $totalQuantity.innerText = countItemsQuantity;
 }
 
 // Fonction de calcul et de display du total du prix du panier
 function calculateTotalPrice() {
-  // Initialisation de la variable
-  let addItemsPrice = [];
-
-  // Boucle sur le contenu du panier pour extraire les prix et les multiplier par le nombre total d'articles
-  for (let i = 0; i < cartContent.length; i++) {
-    let priceInCart = cartContent[i].price * cartContent[i].quantity;
-    addItemsPrice.push(priceInCart);
-    // console.log(addItemsPrice);
-  }
-
-  const reducer = (acc, currValue) => acc + currValue;
-  const sumOfPrices = addItemsPrice.reduce(reducer, 0);
-  $totalPrice.innerText = sumOfPrices;
+  $totalPrice.innerText = cartContent.reduce((acc, item) => {
+    return acc + parseInt(item.quantity * item.price);
+  }, 0);
 }
 
 // Gestion du formulaire pour la commande
-
 function validateFirstName() {
   const firstNameEntry = $firstNameField.value.trim();
   const setFirstNameRegEx =
@@ -260,7 +248,7 @@ function confirmOrder(contact) {
     contact,
     products: cartContent.map((product) => product.id),
   });
-  console.log(myBody);
+
   const myHeaders = {
     Accept: "application/json",
     "Content-type": "application/json",
@@ -278,7 +266,6 @@ function confirmOrder(contact) {
       }
     })
     .then(function (order) {
-      console.log(order);
       window.location.replace(`./confirmation.html?orderId=${order.orderId}`);
     })
     .catch(function (error) {
@@ -286,7 +273,7 @@ function confirmOrder(contact) {
     });
 }
 
-// Envoi des données du formulaire 
+// Envoi des données du formulaire
 function submitOrder(e) {
   e.preventDefault();
   const firstName = validateFirstName();
@@ -297,9 +284,8 @@ function submitOrder(e) {
   if (firstName && lastName && address && city && email) {
     const contact = { firstName, lastName, address, city, email };
     confirmOrder(contact);
-    console.log(contact);
   } else {
-    window.alert("Formulaire non complété");
+    alert("Formulaire non complété");
   }
 }
 document.getElementById("order").onclick = submitOrder;
@@ -307,4 +293,3 @@ document.getElementById("order").onclick = submitOrder;
 displayCart();
 calculateItemsQuantity();
 calculateTotalPrice();
-confirmOrder();

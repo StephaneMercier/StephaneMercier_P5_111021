@@ -74,15 +74,14 @@ function productToAddToCart() {
     color: colorSelected(),
     quantity: +qtyValue(),
   };
-  console.log(productAdded);
 
   // Alerte en cas de valeur nulle ou excédant 100 pour la quantité
   if (productAdded.quantity < 1 || productAdded.quantity > 100) {
-    alert("Quantité Non Valide");
+    alert("Quantité non valide");
     return;
   }
   // Alerte si couleur non choisie
-  if (productAdded.color == "") {
+  if (productAdded.color === "") {
     alert("Veuillez sélectionner une couleur");
     return;
   }

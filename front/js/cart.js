@@ -112,6 +112,10 @@ function onClickDeleteItem(event) {
   cartToLocalStorage(cart);
 }
 
+// function updateTotal() {
+//   var newPrice =
+// }
+
 // Modifications de la quantité et du prix en fonction
 function updateItemQuantity(event) {
   const itemId = event.target.closest("article").getAttribute("data-id");
@@ -121,7 +125,7 @@ function updateItemQuantity(event) {
     (cartItem) => cartItem.id === itemId && cartItem.color === itemColor
   );
 
-  // Gestion de l'erreur en cas de quantité nulle
+  // Gestion de l'erreur en cas de quantité nulle pour un ou plusieurs articles du panier
   if (event.target.value < 0) {
     event.target.value = 1;
     alert("quantité non reconnue (min : 1)");
@@ -152,6 +156,7 @@ function calculateTotalPrice() {
 }
 
 // Gestion du formulaire pour la commande
+// Validation du champs "Prénom"
 function validateFirstName() {
   const firstNameEntry = $firstNameField.value.trim();
   const setFirstNameRegEx =
@@ -161,8 +166,7 @@ function validateFirstName() {
   if (firstNameEntry == "") {
     firstNameErrMsg.textContent = "Merci d'entrer votre prénom";
   } else if (!setFirstNameRegEx.test(firstNameEntry)) {
-    firstNameErrMsg.textContent =
-      "Le champ du prénom ne doit pas contenir de caractères spéciaux ni d'espaces";
+    firstNameErrMsg.textContent = "Le format du prénom est incorrect";
   } else {
     firstNameErrMsg.innerText = "";
     return firstNameEntry;
@@ -170,6 +174,7 @@ function validateFirstName() {
 }
 $firstNameField.addEventListener("change", validateFirstName);
 
+// Validation du champs "Nom"
 function validateLastName() {
   const lastNameEntry = $lastNameField.value.trim();
   const setLastNameRegEx =
@@ -178,33 +183,33 @@ function validateLastName() {
   if (lastNameEntry == "") {
     lastNameErrMsg.textContent = "Merci d'entrer votre nom de famille";
   } else if (!setLastNameRegEx.test(lastNameEntry)) {
-    lastNameErrMsg.textContent =
-      "Le nom de famille ne doit comporter aucun caractère spécial ni d'espace";
+    lastNameErrMsg.textContent = "Le format du nom de famille est incorrect";
   } else {
     lastNameErrMsg.textContent = "";
     return lastNameEntry;
   }
-  return false;
 }
 $lastNameField.addEventListener("change", validateLastName);
 
+// Validation du champs "Adresse"
 function validateAddress() {
   const addressEntry = $addressField.value.trim();
   const setAddressRegEx =
     /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ 0-9-]+$/;
-  let addressErrMsg = document.getElementById("addressErrorMsg");
+  const addressErrMsg = document.getElementById("addressErrorMsg");
   if (addressEntry == "") {
     addressErrMsg.textContent =
       "Veuillez renseigner votre addresse de résidence";
   } else if (!setAddressRegEx.test(addressEntry)) {
     addressErrMsg.textContent = "Le format de l'adresse n'est pas valide";
   } else {
-    addressErrMsg = "";
+    addressErrMsg.textContent = "";
     return addressEntry;
   }
 }
 $addressField.addEventListener("change", validateAddress);
 
+// Validation du champs "Ville"
 function validateCity() {
   const cityEntry = $cityField.value.trim();
   const setCityRegEx =
@@ -213,14 +218,15 @@ function validateCity() {
   if (cityEntry == "") {
     cityErrMsg.textContent = "Veuillez renseigner votre Ville de résidence";
   } else if (!setCityRegEx.test(cityEntry)) {
-    cityErrMsg.textContent = "Le nom de la Ville est incorrect";
+    cityErrMsg.textContent = "Le format du nom de la Ville est incorrect";
   } else {
-    cityErrMsg == "";
+    cityErrMsg.textContent = "";
     return cityEntry;
   }
 }
 $cityField.addEventListener("change", validateCity);
 
+// Validation du champs "E-mail"
 function validateEmail() {
   const emailEntry = $emailField.value.trim();
   const setEmailRegEx =
@@ -231,7 +237,7 @@ function validateEmail() {
   } else if (!setEmailRegEx.test(emailEntry)) {
     emailErrMsg.textContent = "le format de l'adresse e-mail n'est pas valide";
   } else {
-    emailErrMsg == "";
+    emailErrMsg.textContent = "";
     return emailEntry;
   }
 }
@@ -240,7 +246,7 @@ $emailField.addEventListener("change", validateEmail);
 // Confirmation de la commande
 function confirmOrder(contact) {
   if (cartContent === null || cartContent.length === 0) {
-    window.alert("Panier vide");
+    alert("Panier vide");
     return;
   }
 
@@ -281,6 +287,8 @@ function submitOrder(e) {
   const address = validateAddress();
   const city = validateCity();
   const email = validateEmail();
+
+  // Création de l'objet "contact"
   if (firstName && lastName && address && city && email) {
     const contact = { firstName, lastName, address, city, email };
     confirmOrder(contact);
@@ -290,6 +298,7 @@ function submitOrder(e) {
 }
 document.getElementById("order").onclick = submitOrder;
 
+// Appel des fonctions
 displayCart();
 calculateItemsQuantity();
 calculateTotalPrice();

@@ -1,3 +1,5 @@
+const $addToCart = document.getElementById(`addToCart`);
+
 // Récupération de l'ID du produit à afficher
 function getProductIdByUrlParam() {
   let productUrl = window.location.search;
@@ -81,7 +83,7 @@ function productToAddToCart() {
     return;
   }
   // Alerte si couleur non choisie
-  if (productAdded.color === "") {
+  if (productAdded.color == "") {
     alert("Veuillez sélectionner une couleur");
     return;
   }
@@ -105,16 +107,9 @@ function productToAddToCart() {
   cartToLocalStorage(cart);
 }
 
-// Message de confirmation du produit ajouté dans le panier
-function message() {
-  alert("produit ajouté dans le panier");
-}
-
-// eventListener sur le bouton "ajouter au panier" + envoi du message de confirmation
+// eventListener sur le bouton "ajouter au panier"
 function onClickAndAddToCart() {
-  const addToCart = document.getElementById(`addToCart`);
-  addToCart.addEventListener(`click`, productToAddToCart);
-  addToCart.addEventListener("click", message);
+  $addToCart.addEventListener(`click`, productToAddToCart);
 }
 
 // Fonction Globale

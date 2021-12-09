@@ -77,16 +77,22 @@ function productToAddToCart() {
     quantity: +qtyValue(),
   };
 
-  // Alerte en cas de valeur nulle ou excédant 100 pour la quantité
-  if (productAdded.quantity < 1 || productAdded.quantity > 100) {
-    alert("Quantité non valide");
-    return;
+  function confirmProduct() {
+    // Alerte en cas de valeur nulle ou excédant 100 pour la quantité
+    if (productAdded.quantity < 1 || productAdded.quantity > 100) {
+      alert("Quantité non valide");
+      return;
+    }
+    // Alerte si couleur non choisie
+    else if (productAdded.color == "") {
+      alert("Veuillez sélectionner une couleur");
+      return;
+    } else {
+      alert("Produit ajouté à votre panier");
+      return confirmProduct;
+    }
   }
-  // Alerte si couleur non choisie
-  if (productAdded.color == "") {
-    alert("Veuillez sélectionner une couleur");
-    return;
-  }
+  confirmProduct();
 
   // Ajout d'un produit même ID même couleur
   let sameId = false;

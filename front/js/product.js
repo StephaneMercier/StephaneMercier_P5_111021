@@ -106,15 +106,11 @@ function productToAddToCart() {
   }
   cartToLocalStorage(cart);
 }
-
-// eventListener sur le bouton "ajouter au panier"
-function onClickAndAddToCart() {
-  $addToCart.addEventListener(`click`, productToAddToCart);
-}
+// Ajout du produit au panier et dans le localStorage au clic sur le bouton "Ajouter"
+$addToCart.addEventListener(`click`, productToAddToCart);
 
 // Fonction Globale
 (async () => {
   let productId = getProductIdByUrlParam();
   await displayProduct(productId);
-  onClickAndAddToCart();
 })();

@@ -7,7 +7,14 @@ const $lastNameField = document.getElementById("lastName");
 const $addressField = document.getElementById("address");
 const $cityField = document.getElementById("city");
 const $emailField = document.getElementById("email");
-
+const namesRegex =
+  /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ -]+$/;
+const adressRegex =
+  /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ 0-9-]+$/;
+const cityRegex =
+  /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+const emailRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 // Récupération du panier dans le localStorage
 function fetchCartFromLocalStorage() {
   const convertFromLocalStorage = localStorage.getItem("cart");
@@ -159,13 +166,10 @@ function calculateTotalPrice() {
 // Validation du champs "Prénom"
 function validateFirstName() {
   const firstNameEntry = $firstNameField.value.trim();
-  const setFirstNameRegEx =
-    /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ -]+$/;
-
   const firstNameErrMsg = document.getElementById("firstNameErrorMsg");
   if (firstNameEntry == "") {
     firstNameErrMsg.textContent = "Merci d'entrer votre prénom";
-  } else if (!setFirstNameRegEx.test(firstNameEntry)) {
+  } else if (!namesRegex.test(firstNameEntry)) {
     firstNameErrMsg.textContent = "Le format du prénom est incorrect";
   } else {
     firstNameErrMsg.innerText = "";
@@ -177,12 +181,10 @@ $firstNameField.addEventListener("change", validateFirstName);
 // Validation du champs "Nom"
 function validateLastName() {
   const lastNameEntry = $lastNameField.value.trim();
-  const setLastNameRegEx =
-    /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ -]+$/;
   const lastNameErrMsg = document.getElementById("lastNameErrorMsg");
   if (lastNameEntry == "") {
     lastNameErrMsg.textContent = "Merci d'entrer votre nom de famille";
-  } else if (!setLastNameRegEx.test(lastNameEntry)) {
+  } else if (!namesRegex.test(lastNameEntry)) {
     lastNameErrMsg.textContent = "Le format du nom de famille est incorrect";
   } else {
     lastNameErrMsg.textContent = "";
@@ -194,13 +196,11 @@ $lastNameField.addEventListener("change", validateLastName);
 // Validation du champs "Adresse"
 function validateAddress() {
   const addressEntry = $addressField.value.trim();
-  const setAddressRegEx =
-    /^[A-Za-záÁàÀâÂäÄãÃåÅæÆçÇéÉèÈêÊëËíÍìÌîÎïÏñÑóÓòÒôÔöÖõÕøØœŒßúÚùÙûÛüÜ 0-9-]+$/;
   const addressErrMsg = document.getElementById("addressErrorMsg");
   if (addressEntry == "") {
     addressErrMsg.textContent =
       "Veuillez renseigner votre addresse de résidence";
-  } else if (!setAddressRegEx.test(addressEntry)) {
+  } else if (!adressRegex.test(addressEntry)) {
     addressErrMsg.textContent = "Le format de l'adresse n'est pas valide";
   } else {
     addressErrMsg.textContent = "";
@@ -212,12 +212,10 @@ $addressField.addEventListener("change", validateAddress);
 // Validation du champs "Ville"
 function validateCity() {
   const cityEntry = $cityField.value.trim();
-  const setCityRegEx =
-    /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
   const cityErrMsg = document.getElementById("cityErrorMsg");
   if (cityEntry == "") {
     cityErrMsg.textContent = "Veuillez renseigner votre Ville de résidence";
-  } else if (!setCityRegEx.test(cityEntry)) {
+  } else if (!cityRegex.test(cityEntry)) {
     cityErrMsg.textContent = "Le format du nom de la Ville est incorrect";
   } else {
     cityErrMsg.textContent = "";
@@ -229,12 +227,10 @@ $cityField.addEventListener("change", validateCity);
 // Validation du champs "E-mail"
 function validateEmail() {
   const emailEntry = $emailField.value.trim();
-  const setEmailRegEx =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const emailErrMsg = document.getElementById("emailErrorMsg");
   if (emailEntry == "") {
     emailErrMsg.textContent = "Veuillez renseigner votre addresse e-mail";
-  } else if (!setEmailRegEx.test(emailEntry)) {
+  } else if (!emailRegex.test(emailEntry)) {
     emailErrMsg.textContent = "le format de l'adresse e-mail n'est pas valide";
   } else {
     emailErrMsg.textContent = "";

@@ -1,5 +1,6 @@
-// Récupération de l'Id du numéro de commande
 const $orderId = document.getElementById("orderId");
+
+// Récupération de l'Id du numéro de commande
 function getProductIdByUrlParam() {
   let productUrl = window.location.search;
   let urlParams = new URLSearchParams(productUrl);

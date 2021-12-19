@@ -15,14 +15,13 @@ const cityRegex =
   /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 // Récupération du panier dans le localStorage
 function fetchCartFromLocalStorage() {
   const convertFromLocalStorage = localStorage.getItem("cart");
   let cart;
   if (convertFromLocalStorage) {
     cart = JSON.parse(convertFromLocalStorage);
-
-    // si le panier n'existe pas, initialisation de celui-ci
   } else {
     cart = [];
   }
@@ -117,11 +116,8 @@ function onClickDeleteItem(event) {
   itemToDelete.removeChild(article);
 
   cartToLocalStorage(cart);
+  location.reload();
 }
-
-// function updateTotal() {
-//   var newPrice =
-// }
 
 // Modifications de la quantité et du prix en fonction
 function updateItemQuantity(event) {
@@ -140,6 +136,7 @@ function updateItemQuantity(event) {
 
   cartContent[itemKey].quantity = event.target.value;
 
+  // Mise à jour du prix et de la qté totale après modif
   calculateTotalPrice();
   calculateItemsQuantity();
   cartToLocalStorage(cartContent);
@@ -147,12 +144,10 @@ function updateItemQuantity(event) {
 
 // Calcul du total des articles
 function calculateItemsQuantity() {
-  let countItemsQuantity = cartContent.reduce(
+  $totalQuantity.innerText = cartContent.reduce(
     (acc, curr) => acc + parseInt(curr.quantity),
     0
   );
-
-  $totalQuantity.innerText = countItemsQuantity;
 }
 
 // Fonction de calcul et de display du total du prix du panier
